@@ -20,12 +20,18 @@ struct ContentView: View {
             HStack {
                 TextField("Enter new item", text: $newItemText)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(height: 30)
+                    .padding(.leading, 8)
+                    .padding(.trailing, 8)
                 Button("Add") {
                     addItem(itemName: newItemText)
                     newItemText = ""
                 }
+                .frame(height: 30)
+                .padding(.leading, 8)
+                .padding(.trailing, 8)
             }
-            .padding()
+            .padding(.top, 25)
             
             List {
                 ForEach(items) { item in
@@ -37,32 +43,32 @@ struct ContentView: View {
                             Text(item.name)
                         }
                         Spacer()
-                        Button {
-                            if editingItem?.id == item.id {
-                                updateItem(item: item, itemName: editingText)
-                                editingItem = nil
-                                editingText = ""
-                            } else {
-                                editingItem = item
-                                editingText = item.name
+                        HStack {
+                            Button {
+                                if editingItem?.id == item.id {
+                                    updateItem(item: item, itemName: editingText)
+                                    editingItem = nil
+                                    editingText = ""
+                                } else {
+                                    editingItem = item
+                                    editingText = item.name
+                                }
+                            } label: {
+                                Image(systemName: editingItem?.id == item.id ? "checkmark" : "pencil")
                             }
-                        } label: {
-                            Image(systemName: editingItem?.id == item.id ? "checkmark" : "pencil")
-                        }
-                        .padding(.leading, 5)
-                        .buttonStyle(.borderless)
-                        
-                        Button {
-                            deleteItem(item: item)
-                        } label: {
-                            Image(systemName: "trash")
+                            .padding(.trailing, 5)
+                            .buttonStyle(.borderless)
+                            
+                            Button {
+                                deleteItem(item: item)
+                            } label: {
+                                Image(systemName: "trash")
 
+                            }
+                            .buttonStyle(.borderless)
                         }
-                        .buttonStyle(.borderless)
-
                     }
-                    .contentShape(Rectangle()) // sadece görünümü tanımlar
-                    .padding(4)
+                    .padding(5)
                 }
                 .onDelete(perform: deleteItems)
             }
